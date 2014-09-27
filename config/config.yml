@@ -1,0 +1,17 @@
+defaults: &defaults
+  roles:
+    - admin
+    - order_admin
+    - content_admin
+    - order_submitter
+    - user
+  default_role: user
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
