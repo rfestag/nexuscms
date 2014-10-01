@@ -5,6 +5,7 @@ defaults: &defaults
     - content_admin
     - order_submitter
     - user
+    - guest
   default_role: user
 
 development:

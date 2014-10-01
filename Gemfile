@@ -1,7 +1,8 @@
 source "https://rubygems.org"
+source 'https://rails-assets.org'
 
-gem "rails", "4.1.1"
-gem "mongoid", github: "mongoid/mongoid"
+gem "rails", "~> 4.1.6"
+gem "mongoid", "~> 4.0.0"
 gem "sass-rails", "~> 4.0.3"
 gem "uglifier", ">= 1.3.0"
 gem "coffee-rails", "~> 4.0.1"
@@ -30,12 +31,10 @@ group :test do
   gem "rb-inotify", "~> 0.9"
 end
 
-#gem "bootstrap-sass", "~> 2.3.2.1"
-gem "twbs_sass_rails"
-#gem "font-awesome-sass-rails"
+#gem "twbs_sass_rails"
 gem "simple_form", github: "plataformatec/simple_form"
-gem "devise", "~> 3.0.0"
-gem "cancan"
+gem "devise"
+gem "pundit"
 gem "omniauth"
 gem "omniauth-facebook"
 gem "omniauth-twitter"
@@ -46,3 +45,9 @@ gem 'mongoid-history'
 gem 'mongoid_userstamp'
 gem 'mongoid_slug'
 gem 'workflow'
+gem 'slim-rails'
+gem 'haml'
+gem 'rails-assets-bootstrap-sass'
+gem 'autoprefixer-rails'
+gem 'rails-assets-angular-strap'
+

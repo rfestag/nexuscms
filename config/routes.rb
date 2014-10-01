@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   }
 
   resources :users, defaults: {format: :json}
+  get 'whoami' => 'users#whoami', defaults: {format: :json}
   resources :products, defaults: {format: :json}
   resources :orders, defaults: {format: :json}
   resources :events, defaults: {format: :json}

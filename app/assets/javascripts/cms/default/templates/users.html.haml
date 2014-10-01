@@ -1,0 +1,60 @@
+.row
+  %p
+  .col-md-1
+    %button.btn.btn-default{"ng-click"=>"addUser()"} 
+      %span.glyphicon.glyphicon-plus
+      Add User
+  .col-md-3.col-md-offset-8
+    .input-group
+      %input.form-control{:type => :text}
+      %span.input-group-btn
+        %button.btn.btn-default{:type => :button}
+          %i.glyphicon.glyphicon-search
+.row{"ng-show" => "newUser"}
+  %p
+  .col-md-12
+    %form.form-inline{:role => :form, "ng-submit" => "createUser()"}
+      .form-group
+        %label.sr-only{:for => "name"} Name
+        %input.form-control{:type => "text", :id => "name", :placeholder => "Name", "ng-model" => "newUser.name"}
+      .form-group
+        %label.sr-only{:for => "email"} E-mail
+        %input.form-control{:type => "email", :id => "email", :placeholder => "E-mail", "ng-model" => "newUser.email"}
+      .form-group
+        %label.sr-only{:for => "password"} Password
+        %input.form-control{:type => "password", :id => "password", :placeholder => "Password", "ng-model" => "newUser.password"}
+      .form-group
+        %label.sr-only{:for => "password_confirmation"} Confirm Password
+        %input.form-control{:type => "password", :id => "password_confirmation", :placeholder => "Confirm Password", "ng-model" => "newUser.password_confirmation"}
+      .form-group
+        %button.btn.btn-primary{:type => "submit", "ng-disabled" => "newUser.$waiting"} Save
+        %button.btn.btn-default{:type => "button", "ng-disabled" => "newUser.$waiting", "ng-click" => "cancelNewUser()"} Cancel
+.row
+  %p
+  .col-md-12
+    %table.table.table-hover
+      %thead
+        %tr
+          %th Name
+          %th E-Mail
+          %th Roles
+          %th 
+      %tbody
+        %tr{"ng-repeat" => "user in users"}
+          %td
+            %span{"editable-text"=>"user.name", "e-name"=>"name", "e-form" => "rowform", "e-required" => true}{{ user.name || 'Empty' }}
+          %td
+            %span{"editable-text"=>"user.email", "e-name"=>"email", "e-form" => "rowform", "e-required" => true}{{ user.email || 'Empty' }}
+          %td
+            %span{"editable-checklist" => "user.roles", "e-name" => "roles", "e-form" => "rowform", "e-ng-options" => "r.name for r in roleNames"}
+              {{ showUserRoles(user) }}
+          %td 
+            %form.form-buttons.form-inline{"editable-form" => true, :name => "rowform", :onbeforesave => "saveUser(user, $data)", "ng-show" => "rowform.$visible"}
+              %button.btn.btn-primary{:type => "submit", "ng-disabled" => "user.$waiting"} Save
+              %button.btn.btn-default{:type => "button", "ng-disabled" => "user.$waiting", "ng-click" => "rowform.$cancel()"} Cancel
+            .buttons{"ng-show" => "!rowform.$visible"}
+              %button.btn.btn-primary{"ng-click" => "rowform.$show()"} Edit
+              %button.btn.btn-danger{"ng-click" => "removeUser(user)"} Delete
+.row
+  .text-center
+    %pagination.pagination-sm{"boundary-links" => "true", "on-select-page" => "getPage(page)", "max-size" => "maxSize", "items-per-page" => "pageSize", "total-items" => "total", "page" => "page", "previous-text" => "&lsaquo;".html_safe, "next-text"=>"&rsaquo;".html_safe, "first-text"=>"&laquo;".html_safe, "last-text"=>"&raquo;".html_safe}

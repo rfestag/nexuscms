@@ -2,8 +2,17 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    authorize! :index, @user, :message => 'Not authorized as an administrator.'
-    @users = User.all
+    query = (params[:query])? User.find(JSON.parse(query)) : User
+    @users = ApplicationPolicy::Scope.new(current_user, query).resolve
+  end
+  def whoami
+    user = current_user
+    if user 
+      #TODO: Also include list of what the user can do
+      render json: current_user
+    else
+      raise ActionController::RoutingError.new('Not Found')
+    end
   end
 
   def show

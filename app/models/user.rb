@@ -20,10 +20,8 @@ class User
   def full_name
     "#{first_name} #{last_name}"
   end
-  class << self
-    def serialize_from_session(key, salt)
-      record = to_adapter.get(key.to_s)
-      record if record && record.authenticatable_salt == salt
-    end
+
+  def to_key
+    id.to_s
   end
 end

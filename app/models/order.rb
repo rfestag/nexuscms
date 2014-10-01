@@ -20,9 +20,9 @@ class Order
       event :reject, transitions_to: :rejected
     end
     state :accepted do
-      event :send, transitions_to: :sent
+      event :ship, transitions_to: :shipped
     end
-    state :sent do
+    state :shipped do
       event :payment_recieved, transitions_to: :paid
     end
     state :paid do

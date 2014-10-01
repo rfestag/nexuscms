@@ -1,0 +1,19 @@
+angular.module('templates', []).run([ '$templateCache', function($templateCache) {
+    <%
+      environment.context_class.instance_eval { include ActionView::Helpers::JavaScriptHelper }
+      app_root  = File.join('./', __FILE__)
+      templates = File.join(Rails.root, %w{app assets javascripts ** templates *})
+      Dir.glob(templates).each do |f|
+        depend_on(f)
+        if File.file?(f)
+          file = Pathname(f).basename.to_s
+          components = file.split(".")
+          file = components.first unless components.last == 'html'
+          key = "/assets/#{file}.html"
+          content = environment.find_asset(f).body
+    %>
+    $templateCache.put("<%= key %>", "<%= escape_javascript(content) %>" );
+     <% end %>
+   <% end %>
+}]);
+

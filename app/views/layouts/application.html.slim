@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title Sample App
+    meta name="keywords" content="some keywords"
+    == stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    == javascript_include_tag "application", "data-turbolinks-track" => true
+    == csrf_meta_tags
+    == yield :head
+  body ng-app="cms"
+    div ng-controller="CmsCtrl"
+      nav.navbar.navbar-default role='navigation'
+        == render 'layouts/navigation'
+      == yield

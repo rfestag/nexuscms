@@ -12,6 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require twbs/bootstrap
 //= require turbolinks
-//= require_tree .
+//= require angular
+//= require bootstrap
+//= require angular-strap
+//= require angular-ui-router
+//= require xeditable
+//= require checklist-model
+//= require templates
+//= require app
+//= require_tree ./cms

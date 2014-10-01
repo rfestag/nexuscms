@@ -1,0 +1,51 @@
+div.modal tabindex=-1 role="dialog"
+  div.modal-dialog
+    div.modal-content
+      div.modal-header
+        h3 Login
+      form.form-horizontal role=:form
+        .modal-body
+          div ng-class="error.class" ng-show="error.message"
+            label.help-block 
+              == "{{error.message}}"
+          div.form-group ng-class="error.class" ng-hide="login"
+            label.col-sm-2.control-label for=:name Name
+            div.col-sm-10
+              input.form-controlx id=:name type=:text placeholder="Name" ng-model="user.name"
+              p.help-block ng-repeat="field_error in error.errors.name"
+                == "{{field_error}}"
+          div.form-group ng-class="error.class"
+            label.col-sm-2.control-label for=:email E-mail
+            div.col-sm-10
+              input.form-control id=:email type=:email placeholder="E-mail" ng-model="user.email"
+              p.help-block ng-repeat="field_error in error.errors.email"
+                == "{{field_error}}"
+          div.form-group ng-class="error.class"
+            label.col-sm-2.control-label for=:password Password
+            div.col-sm-10
+              input.form-control id=:password type=:password placeholder="Password" ng-model="user.password"
+              p.help-block ng-repeat="field_error in error.errors.password"
+                == "{{field_error}}"
+          div.form-group ng-class="error.class" ng-hide="login"
+            label.col-sm-2.control-label for=:password_confirmation Password Confirmation
+            div.col-sm-10
+              input.form-control id=:password_confirmation type=:password placeholder="Password Confirmation" ng-model="user.password_confirmation"
+              p.help-block ng-repeat="field_error in error.errors.password_confirmation"
+                == "{{field_error}}"
+          div.form-group
+            div.col-sm-offset-2.col-sm-10
+              div.checkbox
+                label
+                  input type=:checkbox Remember me
+            div.col-sm-offset-2.col-sm-10
+              a href="#" ng-show="login" ng-click="toggleLogin()" Register
+            div.col-sm-offset-2.col-sm-10
+              a href="#" ng-hide="login" ng-click="toggleLogin()" Login
+            div.col-sm-offset-2.col-sm-10
+              a href="#" ng-click="password_reset()" Reset Password
+        div.modal-footer
+          div.form-group
+            div.col-sm-offset-2.col-sm-10
+              button.btn.btn-primary ng-show="login" ng-click="login()" Login
+              button.btn.btn-primary ng-hide="login" ng-click="register()" Register
+              button.btn.btn-warning ng-click="cancel()" Cancel

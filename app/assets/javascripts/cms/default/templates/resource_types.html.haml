@@ -1,0 +1,70 @@
+.row
+  %p
+  .col-md-1
+    %button.btn.btn-default{"ng-click"=>"addType()"} 
+      %span.glyphicon.glyphicon-plus
+      Add Type
+  .col-md-3.col-md-offset-8
+    .input-group
+      %input.form-control{:type => :text}
+      %span.input-group-btn
+        %button.btn.btn-default{:type => :button}
+          %i.glyphicon.glyphicon-search
+.row{"ng-show" => "newType"}
+  %p  
+  .col-md-12
+    %form.form-inline{:role => :form, "ng-submit" => "createType()"}
+      .form-group
+        %label.sr-only{:for => "name"} Name
+        %input.form-control{:type => "text", :id => "name", :placeholder => "Name", "ng-model" => "newType.name"}
+      .form-group
+        %label.sr-only{:for => "commentable"} Commentable
+        %input.form-control{:type => "checkbox", :id => "commentable", "ng-model" => "newType.commentable"}
+      .form-group
+        %button.btn.btn-primary{:type => "submit", "ng-disabled" => "newType.$waiting"} Save
+        %button.btn.btn-default{:type => "button", "ng-disabled" => "newType.$waiting", "ng-click" => "cancelNewType()"} Cancel
+.row
+  %p
+  .col-md-12
+    .row 
+      .col-md-4 Name
+      .col-md-4 Commentable
+    .row{"ng-repeat" => "type in types"}
+      .row
+        .col-md-4
+          %span{"editable-text"=>"type.name", "e-name"=>"name", "e-form" => "rowform", "e-required" => true} {{ type.name }}
+        .col-md-4
+          %span{"editable-checkbox"=>"type.commentable", "e-name"=>"commentable", "e-form" => "rowform", "e-required" => true} {{ type.commentable || false }}
+        .cold-md-4
+          %form.form-buttons.form-inline{"editable-form" => true, :name => "rowform", :onbeforesave => "saveType(type, $data)", "ng-show" => "rowform.$visible"}
+            %button.btn.btn-primary{:type => "submit", "ng-disabled" => "type.$waiting"} Save
+            %button.btn.btn-default{:type => "button", "ng-disabled" => "type.$waiting", "ng-click" => "rowform.$cancel()"} Cancel
+          .buttons{"ng-show" => "!rowform.$visible"}
+            %button.btn.btn-primary{"ng-click" => "rowform.$show()"} Edit
+            %button.btn.btn-danger{"ng-click" => "removeType(type)"} Delete
+      .row{"ng-show" => "rowform.$visible"}
+        .col-md-10
+          %table.table.table-condensed
+            %thead
+              %tr
+                %th Name
+                %th Type
+                %th Required
+                %th
+                  %button.pull-right.btn.btn-default.btn-xs{"ng-click"=>"addProperty(type)"} 
+                    %span.glyphicon.glyphicon-plus
+                    Add Property
+            %tbody
+              %tr{"ng-repeat" => "property in type.properties"}
+                %td
+                  %span{"editable-text"=>"property.name", "e-name"=>"property.name", "e-form" => "rowform", "e-required" => true} {{ property.name }}
+                %td
+                  %span{"editable-select"=>"property.type", "e-ng-options" => "value for vlaue in propertyTypes", "e-name"=>"property.type", "e-form" => "rowform", "e-required" => true} {{ property.type }}
+                %td
+                  %span{"editable-checkbox"=>"property.required", "e-name"=>"property.required", "e-form" => "rowform"} {{ property.required || false }}
+                %td 
+                  .buttons{"ng-show" => "rowform.$visible"}
+                    %button.btn.btn-danger{"ng-click" => "removeProperty(type, property)"} Delete
+.row
+  .text-center
+    %pagination.pagination-sm{"boundary-links" => "true", "on-select-page" => "getPage(page)", "max-size" => "maxSize", "items-per-page" => "pageSize", "total-items" => "total", "page" => "page", "previous-text" => "&lsaquo;".html_safe, "next-text"=>"&rsaquo;".html_safe, "first-text"=>"&laquo;".html_safe, "last-text"=>"&raquo;".html_safe}

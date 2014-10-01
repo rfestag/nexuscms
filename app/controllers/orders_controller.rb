@@ -4,9 +4,9 @@ class OrdersController < ApplicationController
 
   def accept
   end
-  def accept
+  def reject
   end
-  def send
+  def ship
   end
   def payment_recieved
   end
