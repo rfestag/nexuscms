@@ -199,15 +199,23 @@ GEM
     rails-assets-angular-motion (0.3.3)
       rails-assets-angular (~> 1.2.10)
       rails-assets-angular-animate (~> 1.2.10)
+    rails-assets-angular-resource (1.2.25)
+      rails-assets-angular (= 1.2.25)
     rails-assets-angular-strap (2.1.1)
       rails-assets-angular (>= 1.2.21, < 2)
       rails-assets-angular-motion (>= 0.3.3, < 0.4)
       rails-assets-bootstrap (>= 3.2.0, < 4)
+    rails-assets-angular-ui-router (0.2.11)
+      rails-assets-angular (>= 1.0.8)
     rails-assets-bootstrap (3.2.0)
       rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-sass (3.0.2)
       rails-assets-jquery (>= 1.9.0)
+    rails-assets-checklist-model (0.1.3)
+      rails-assets-angular (>= 1.0.8)
     rails-assets-jquery (2.1.1)
+    rails-assets-x-editable (1.5.1)
+      rails-assets-jquery (>= 1.6)
     railties (4.1.6)
       actionpack (= 4.1.6)
       activesupport (= 4.1.6)
@@ -323,8 +331,12 @@ DEPENDENCIES
   pundit
   quiet_assets
   rails (~> 4.1.6)
+  rails-assets-angular-resource
   rails-assets-angular-strap
+  rails-assets-angular-ui-router
   rails-assets-bootstrap-sass
+  rails-assets-checklist-model
+  rails-assets-x-editable
   rb-inotify (~> 0.9)
   rspec-rails
   sass-rails (~> 4.0.3)

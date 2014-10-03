@@ -1,0 +1,10 @@
+div.row
+  div.col-md-10.col-md-offset-1
+    ul.nav.nav-tabs
+      li ng-class="{active: $state.includes('admin.metrics')}"
+        a ui-sref='admin.metrics' Metrics
+      li ng-class="{active: $state.includes('admin.users')}"
+        a ui-sref='admin.users' Users
+div.row
+  div.col-md-10.col-md-offset-1
+    ui-view

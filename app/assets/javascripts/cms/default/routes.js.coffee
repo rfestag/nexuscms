@@ -20,9 +20,4 @@
       templateUrl: '/assets/users.html'
       controller: @UserCtrl
     })  
-    .state('admin.resource_types', {
-      url: '/resource_typess'
-      templateUrl: '/assets/resource_types.html'
-      controller: @ResourceTypeCtrl
-    })  
 )

@@ -1,7 +1,7 @@
 @app.factory "UserSvc", ($resource) ->
   total = 0
   page = 1
-  per = 25
+  limit = 25
   svc = $resource('/users/:id.json',
     { id: '@id' },
     {
@@ -12,9 +12,9 @@
                   transformResponse: (data, headers) ->
                     d = angular.fromJson(data)
                     total = d.total
-                    return d.users
+                    return d.objects
                   transformRequest: (data, headers) ->
-                    d = angular.extend({page: page, per: per}, data)
+                    d = angular.extend({page: page, limit: limit}, data)
                     page = d.page
                     return d
                 }

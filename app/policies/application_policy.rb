@@ -1,6 +1,6 @@
 class ApplicationPolicy
   FieldBlacklist = %W(_id created_at created_by)
-  attr_accessor :user, :record
+  attr_accessor :user, :resource
   @readers = Set.new
   @creators = Set.new
   @updaters = Set.new
@@ -82,7 +82,7 @@ class ApplicationPolicy
   end
   def show?
     allowed = readers.include? :guest
-    allowed ||= (resource.responds_to? :created_by)? (user and resource.created_by == user) : false
+    allowed ||= (resource.respond_to? :created_by)? (user and resource.created_by == user) : false
     puts "Readers: #{readers.to_a}"
     readers.reduce(allowed) do |allowed, r|
       puts "Does #{user.email} have #{r}? #{user.has_role? r}"
@@ -98,7 +98,7 @@ class ApplicationPolicy
     create?
   end
   def update?
-    allowed = (resource.responds_to? :created_by)? (user and resource.created_by == user) : false
+    allowed = (resource.respond_to? :created_by)? (user and resource.created_by == user) : false
     updaters.reduce(allowed) do |allowed, r|
       allowed || user.has_role?(r)
     end unless allowed
@@ -107,7 +107,7 @@ class ApplicationPolicy
     update?
   end
   def destroy?
-    allowed = (resource.responds_to? :created_by)? (user and resource.created_by == user) : false
+    allowed = (resource.respond_to? :created_by)? (user and resource.created_by == user) : false
     deleters.reduce(allowed) do |allowed, r|
       allowed || user.has_role?(r)
     end unless allowed

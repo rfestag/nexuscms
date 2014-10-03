@@ -11,11 +11,19 @@ module Api
     get_model.to_s.camelize.constantize
   end
   def index
-    query = (params[:query])? get_model_class.where(JSON.parse(params[:query])) : get_model_class
+    page = Integer(params[:page]) - 1 rescue 0
+    limit = Integer(params[:limit]) rescue 10
+    skip = page*limit
+    query = get_model_class
+    query = (params[:query])? query.where(JSON.parse(params[:query])) : query
+    total = query.count
+    query = get_model_class.skip(skip).limit(limit)
+    puts "query: #{query}"
     @objects = ApplicationPolicy::Scope.new(current_user, query).resolve
+    puts @objects.inspect
     respond_to do |format|
-      format.json { render json: @objects }
-      format.xml { render xml: @objects }
+      format.json { render json: {total: total, objects: @objects} }
+      format.xml { render xml: {total: total, objects: @objects} }
     end
   end
   def show
@@ -27,7 +35,7 @@ module Api
     end
   end
   def create
-    @object = get_model_class.new(get_model)
+    @object = get_model_class.new(object_params)
     authorize @object
     respond_to do |format|
       if @object.save
@@ -41,10 +49,10 @@ module Api
   end
 
   def update
-    @object = get_model_class.new(get_model)
+    @object = get_model_class.find(params[:id])
     authorize @object
     respond_to do |format|
-      if @object.update_attributes(params[:user])
+      if @object.update_attributes(object_params)
         format.json { head :no_content, status: :ok }
         format.xml { head :no_content, status: :ok }
       else
@@ -55,7 +63,7 @@ module Api
   end
 
   def destroy
-    @object = get_model_class.new(get_model)
+    @object = get_model_class.find(params[:id])
     authorize @object
     respond_to do |format|
       if @object.destroy

@@ -1,0 +1,68 @@
+div.row
+  p
+  div.col-md-1
+    button.btn.btn-default ng-click='addUser()' 
+      span.glyphicon.glyphicon-plus Add User
+  div.col-md-3.col-md-offset-8
+    div.input-group
+      input.form-control type=:text
+      span.input-group-btn
+        button.btn.btn-default type=:button
+          i.glyphicon.glyphicon-search
+div.row ng-show='newUser'
+  p
+  div.col-md-12
+    form.form-inline role=:form ng-submit='createUser()'
+      div.form-group
+        label.sr-only for='first_name' First Name
+        input.form-control type='text' id='first_name'placeholder='First Name' ng-model='newUser.first_name'
+      div.form-group
+        label.sr-only for='last_name' Last Name
+        input.form-control type='text' id='last_name'placeholder='Last Name' ng-model='newUser.last_name'
+      div.form-group
+        label.sr-only for='email' E-mail
+        input.form-control type='email'id='email'placeholder='E-mail' ng-model='newUser.email'
+      div.form-group
+        label.sr-only for='password' Password
+        input.form-control type='password'id='password'placeholder='Password' ng-model='newUser.password'
+      div.form-group
+        label.sr-only for='password_confirmation' Confirm Password
+        input.form-control type='password'id='password_confirmation'placeholder='Confirm Password' ng-model='newUser.password_confirmation'
+      div.form-group
+        button.btn.btn-primary type='submit' ng-disabled='newUser.$waiting' Save
+        button.btn.btn-default type='button' ng-disabled='newUser.$waiting' ng-click='cancelNewUser()' Cancel
+div.row
+  p
+  div.col-md-12
+    table.table.table-hover
+      thead
+        tr
+          th First Name
+          th Last Name
+          th E-Mail
+          th Roles
+          th 
+      tbody
+        tr ng-repeat='user in users'
+          td
+            span editable-text='user.first_name' e-name='first_name' e-form='rowform' e-required=true 
+              == "{{ user.first_name || 'Empty' }}"
+          td
+            span editable-text='user.last_name' e-name='last_name' e-form='rowform' e-required=true 
+              == "{{ user.last_name || 'Empty' }}"
+          td
+            span editable-text='user.email' e-name='email' e-form='rowform' e-required=true
+              == "{{ user.email || 'Empty' }}"
+          td
+            span editable-checklist="user.roles" e-name='roles' e-form='rowform' e-ng-options="role for role in roles"
+              == "{{ showUserRoles(user) }}"
+          td 
+            form.form-buttons.form-inline editable-form=true name='rowform' onbeforesave='saveUser(user, $data)' ng-show='rowform.$visible'
+              button.btn.btn-primary type='submit' ng-disabled='user.$waiting' Save
+              button.btn.btn-default type='button' ng-disabled='user.$waiting' ng-click='rowform.$cancel()' Cancel
+            div.buttons ng-show='!rowform.$visible'
+              button.btn.btn-primary ng-click='rowform.$show()' Edit
+              button.btn.btn-danger ng-click='removeUser(user)' Delete
+div.row
+  div.text-center
+    pagination.pagination-sm boundary-links='true' on-select-page='getPage(page)' max-size='maxSize' items-per-page='pageSize' total-items='total' page='page' previous-text="#{'&lsaquo;'.html_safe}" next-text="#{'&rsaquo;'.html_safe}" first-text="#{'&laquo;'.html_safe}" last-text="#{'&raquo;'.html_safe}"

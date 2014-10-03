@@ -50,4 +50,7 @@ gem 'haml'
 gem 'rails-assets-bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'rails-assets-angular-strap'
-
+gem 'rails-assets-angular-resource'
+gem 'rails-assets-checklist-model'
+gem 'rails-assets-angular-ui-router'
+gem 'rails-assets-x-editable'

@@ -9,11 +9,9 @@
     )
   $scope.users = $scope.getPage(1)
 
+  $scope.roles = ['admin', 'order_admin', 'content_admin', 'order_submitter', 'user']
   $scope.showUserRoles = (user) ->
-    selected = []
-    angular.forEach user.roles, (r) ->
-      selected.push(r.name)
-    if selected.length then selected.join(', ') else 'None'
+    user.roles.join ', '
   $scope.addUser = () ->
     $scope.newUser = {
       name: '',
@@ -32,14 +30,14 @@
   $scope.cancelNewUser = () ->
     $scope.newUser = null
   $scope.saveUser = (user, data) ->
-    UserSvc.update({user: data, id: user._id}, (value, headers) ->
+    UserSvc.update({user: data, id: user._id['$oid']}, (value, headers) ->
       alert("Update successful")
     ,(response) ->
       alert("Update failed")
       return "Fail"
     )
   $scope.removeUser = (user) ->
-    user.$delete({id:  user._id}, () ->
+    user.$delete({id:  user._id['$oid']}, () ->
       $scope.users = $scope.getPage(UserSvc.currentPage())
     ,() ->
       alert("Delete failed")
