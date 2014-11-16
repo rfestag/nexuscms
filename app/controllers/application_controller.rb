@@ -1,15 +1,15 @@
 class ApplicationController < ActionController::Base
-  respond_to :html, :json
   include Pundit
+  respond_to :html, :json
   protect_from_forgery with: :exception
   before_filter :check_registration
   before_filter :configure_permitted_parameters, if: :devise_controller?
   after_filter :set_csrf_cookie_for_ng
 
   rescue_from Pundit::NotAuthorizedError do |exception|
-    redirect_to root_path, :alert => exception.message
+    render json: {alert: exception.message}, status: 403
+    #redirect_to root_path, :alert => exception.message
   end
-
   def set_csrf_cookie_for_ng
       cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
   end

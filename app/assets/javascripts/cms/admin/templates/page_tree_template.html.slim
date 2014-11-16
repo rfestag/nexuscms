@@ -1,0 +1,14 @@
+div.pull-left ui-tree-handle=""
+  span.glyphicon.glyphicon-list
+div.tree-node-content
+  div.btn.btn-xs data-nodrag="" ng-click="toggle(this)"
+    span.glyphicon ng-class="{'glyphicon-chevron-right': (collapsed && page.children && page.children.length > 0), 'glyphicon-chevron-down': (!collapsed && page.children && page.children.length > 0)}"
+  a ng-click="select(page)"
+    == "{{page.title}}"
+  div.btn-group.pull-right
+    button.btn.btn-default.btn-xs ng-click='add_page(page)' title="Add"
+      span.glyphicon.glyphicon-plus
+    button.btn.btn-default.btn-xs ng-click='delete_page(this)' title="Delete"
+      span.glyphicon.glyphicon-trash
+ol ui-tree-nodes="" ng-model="page.children" ng-class="{hidden: collapsed}"
+  li ui-tree-node="" ng-repeat="page in page.children" ng-include="'/templates/page_tree_template.html'"

@@ -40,36 +40,40 @@ class ApplicationPolicy
   end
 
   #Methods used by extending class
-  def self.governs klass
-    @governs = klass
+  def self.governs klass=nil
+    (klass)? (@governs = klass) : @governs
   end
-  def self.permit_write roles, fields
-    fields = (fields == :all)? @governs.fields.keys.reject {|n| n.in? FieldBlacklist} : fields
+  def governs
+    self.class.governs
+  end
+  def self.permit_write roles, *fields
+    fields = @governs.fields.keys if fields.length == 0
+    fields = fields.reject {|n| (n.keys.first rescue n).in? FieldBlacklist}
     [roles].flatten.each do |role|
       @acl[role] += fields
     end
   end
-  def self.manage_roles roles, fields=:all, &block
+  def self.manage_roles roles, *fields, &block
+    block ||= lambda {|scope, user| scope.all}
     read_roles roles, &block
-    create_roles roles
-    update_roles roles
+    create_roles roles, *fields
+    update_roles roles, *fields
     delete_roles roles
-    permit_write roles, fields
   end
   def self.read_roles roles, &block
     roles = [roles].flatten
     @readers += roles
     ApplicationPolicy::Scope.add_scope @governs, roles, &block
   end
-  def self.create_roles roles, fields= :all
+  def self.create_roles roles, *fields
     roles = [roles].flatten
     @creators += roles
-    permit_write roles, fields
+    permit_write roles, *fields
   end
-  def self.update_roles roles, fields= :all
+  def self.update_roles roles, *fields
     roles = [roles].flatten
     @updaters += roles
-    permit_write roles, fields
+    permit_write roles, *fields
   end
   def self.delete_roles roles
     roles = [roles].flatten
@@ -83,11 +87,9 @@ class ApplicationPolicy
   def show?
     allowed = readers.include? :guest
     allowed ||= (resource.respond_to? :created_by)? (user and resource.created_by == user) : false
-    puts "Readers: #{readers.to_a}"
-    readers.reduce(allowed) do |allowed, r|
-      puts "Does #{user.email} have #{r}? #{user.has_role? r}"
+    allowed ||= readers.reduce(allowed) do |allowed, r|
       allowed || user.has_role?(r)
-    end unless allowed
+    end
   end
   def create?
     creators.reduce(false) do |allowed, r|
@@ -99,24 +101,35 @@ class ApplicationPolicy
   end
   def update?
     allowed = (resource.respond_to? :created_by)? (user and resource.created_by == user) : false
-    updaters.reduce(allowed) do |allowed, r|
+    allowed ||= updaters.reduce(allowed) do |allowed, r|
       allowed || user.has_role?(r)
-    end unless allowed
+    end
   end
   def edit?
     update?
   end
   def destroy?
     allowed = (resource.respond_to? :created_by)? (user and resource.created_by == user) : false
-    deleters.reduce(allowed) do |allowed, r|
+    allowed ||= deleters.reduce(allowed) do |allowed, r|
       allowed || user.has_role?(r)
-    end unless allowed
+    end
   end
   def permitted_attributes
     auths = acl.reduce(Set.new) do |auths, (role, attributes)|
       auths += attributes if user.has_role? role
+      auths
     end
-    auths.to_a
+    auths.reduce({scalars: [], arrays: {}, hashes: []}) do |auths, attribute|
+      case governs.fields[attribute].options[:type]
+      when Array
+        auths[:arrays][attribute] = []
+      when Hash
+        auths[:hashes] << attribute
+      else
+        auths[:scalars] << attribute
+      end
+      auths
+    end
   end
 
   class Scope
@@ -128,7 +141,7 @@ class ApplicationPolicy
       @scope = scope
     end
     def self.add_scope klass, roles, &block
-      block ||= lambda {|scope| scope.all}
+      #block ||= lambda {|scope, user| scope.all}
       @reader_scopes = roles.reduce(@reader_scopes) do |reader_scopes, role|
          reader_scopes[role] = block
          reader_scopes
@@ -141,15 +154,21 @@ class ApplicationPolicy
       self.class.scopes
     end
     def resolve
+      scope = nil
       if user and Set.new(scopes.keys) & Set.new(user.roles)
-        scopes.reduce(@scope) do |scope, (role, block)|
-          (user.has_role? role)? block.call(scope) : scope
+        valid = false
+        scope = scopes.reduce(@scope) do |scope, (role, block)|
+          if user.has_role?(role) and block
+            valid = true
+            scope = block.call(scope, user)
+          end
+          scope
         end
+        scope = nil unless valid
       elsif scopes[:guest]
-        scopes[:guest].call scope
-      else
-        scope.none
+        scope = scopes[:guest].call @scope
       end
+      (scope)? scope : @scope.none
     end
   end
 end

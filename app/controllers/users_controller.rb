@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   include Api
-  model :user
 
   def whoami
     u = current_user

@@ -1,0 +1,20 @@
+div.row
+  p
+  div.col-md-3
+    div.well 
+      button.btn.btn-default ng-click='add_page()' 
+        span.glyphicon.glyphicon-plus Add Page
+      div ui-tree="" ng-show="pages.length > 0"
+        ol ui-tree-nodes="" ng-model="pages"
+          li ui-tree-node="" ng-repeat="page in pages" ng-include="'/templates/page_tree_template.html'"
+  div.col-md-7
+    div.row
+      h2.pull-left
+        == "{{page.title}}"
+      div.btn-group.pull-right
+        p
+        button.btn.btn-default ng-click='edit_page(page)' title="Edit"
+          span.glyphicon.glyphicon-pencil
+    div.row
+      p 
+        == "{{page.content}}"

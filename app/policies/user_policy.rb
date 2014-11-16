@@ -6,6 +6,6 @@ class UserPolicy < ApplicationPolicy
   @acl = Hash.new { Set.new }
 
   governs User
-  manage_roles :admin
-  read_roles [:user] {|scope| scope.find(current_user.id)}
+  manage_roles :admin, :username, :email, :first_name, :last_name, :roles => []
+  read_roles [:user] {|scope, user| scope.where(id: user.id)}
 end

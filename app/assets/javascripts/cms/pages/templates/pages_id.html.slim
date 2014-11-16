@@ -1,0 +1,9 @@
+h2
+  == "{{page.title}}"
+div.btn-group.pull-right ng-show="page_management_enabled"
+  button.btn.btn-default ng-click='edit()' title="Edit"
+    span.glyphicon.glyphicon-pencil
+  button.btn.btn-default ng-click='delete()' title="Delete"
+    span.glyphicon.glyphicon-trash
+
+div ng-bind-html="page.content"

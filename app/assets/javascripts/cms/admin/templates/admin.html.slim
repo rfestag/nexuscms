@@ -1,0 +1,12 @@
+div.row
+  div.col-md-10.col-md-offset-1
+    ul.nav.nav-tabs
+      li ng-class="{active: $state.includes('admin.settings')}"
+        a ui-sref='admin.settings' Settings
+      li ng-class="{active: $state.includes('admin.groups')}"
+        a ui-sref='admin.groups' Groups
+      li ng-class="{active: $state.includes('admin.users')}"
+        a ui-sref='admin.users' Users
+div.row
+  div.col-md-10.col-md-offset-1
+    ui-view

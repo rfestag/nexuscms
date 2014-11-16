@@ -1,6 +1,5 @@
 class OrdersController < ApplicationController
   include Api
-  model :order
 
   def accept
   end

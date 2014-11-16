@@ -13,11 +13,16 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require ckeditor/init
 //= require angular
 //= require angular-resource
+//= require angular-sanitize
 //= require bootstrap
 //= require angular-strap
 //= require angular-ui-router
+//= require angular-ui-tree
+//= require ng-context-menu
+//= require ng-ckeditor
 //= require xeditable
 //= require checklist-model
 //= require templates

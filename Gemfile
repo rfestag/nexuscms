@@ -18,7 +18,6 @@ group :development do
 end
 
 group :development, :test do
-  gem "zeus"
   gem "rspec-rails"
   gem "factory_girl_rails"
 end
@@ -31,26 +30,34 @@ group :test do
   gem "rb-inotify", "~> 0.9"
 end
 
-#gem "twbs_sass_rails"
-gem "simple_form", github: "plataformatec/simple_form"
+gem 'autoprefixer-rails'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem 'ckeditor'
 gem "devise"
-gem "pundit"
+gem "figaro"
+gem 'haml'
+gem 'hashugar'
+gem 'mini_magick'
+gem "mongoid-ancestry"
+gem "mongoid-elasticsearch"
+gem 'mongoid-history'
+gem 'mongoid_slug'
+gem 'mongoid_userstamp'
 gem "omniauth"
 gem "omniauth-facebook"
 gem "omniauth-twitter"
-gem "hashugar", github: "alex-klepa/hashugar"
 gem "pry-rails"
-gem "figaro"
-gem 'mongoid-history'
-gem 'mongoid_userstamp'
-gem 'mongoid_slug'
-gem 'workflow'
-gem 'slim-rails'
-gem 'haml'
-gem 'rails-assets-bootstrap-sass'
-gem 'autoprefixer-rails'
-gem 'rails-assets-angular-strap'
+gem "pundit"
 gem 'rails-assets-angular-resource'
-gem 'rails-assets-checklist-model'
-gem 'rails-assets-angular-ui-router'
-gem 'rails-assets-x-editable'
+gem 'rails-assets-angular-sanitize'
+gem 'rails-assets-angular-strap'
+gem 'rails-assets-angular-ui-tree'
+#gem 'rails-assets-angular-ui-router'
+gem "rails-assets-ng-ckeditor"
+gem 'rails-assets-bootstrap-sass'
+gem 'rails-assets-ng-context-menu'
+#gem 'rails-assets-checklist-model'
+#gem 'rails-assets-x-editable'
+gem 'slim-rails'
+gem 'workflow'
+gem 'unicorn'

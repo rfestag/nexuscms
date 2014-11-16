@@ -1,0 +1,44 @@
+div.navbar.navbar-default role='navigation' bs-navbar=""
+  div.container
+    div.navbar-header
+      button.navbar-toggle type=:button data-toggle="collapse" data-target=".navbar-collapse"
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand ui-sref='home' Sample App
+      ul.nav.navbar-nav.navbar-right
+        li ng-repeat="page in root_pages" data-match-route="/pages/{{page._slugs[0]}}$"
+          a ui-sref="pages.id({id: page._slugs[0]})"
+            == "{{page.title}}"
+        li ng-show="page_management_enabled"
+          a ng-click="create_root()"
+            i.glyphicon.glyphicon-plus
+    div.navbar-collapse.collapse
+      ul.nav.navbar-nav.pull-right
+        li.dropdown ng-show="user"
+          a.dropdown-toggle data-toggle="dropdown"
+            span.glyphicon.glyphicon-user
+            == "{{user.email}}"
+            b.caret
+          ul.dropdown-menu role="menu"
+            li
+              a ui-sref="users.id({id: user._id.$oid})" Profile
+            li
+              a ng-click="logout()" Log out
+            li.divider
+            li
+              a ng-hide="page_management_enabled" ng-click="enable_page_management()" Enable Page Management
+            li
+              a ng-show="page_management_enabled" ng-click="disable_page_management()" Disable Page Management
+            li
+              a ui-sref="admin.settings" Admin
+        li.dropdown ng-hide="user" 
+          a.dropdown-toggle data-toggle="dropdown"
+            span.glyphicon.glyphicon-user Log in
+            b.caret
+          ul.dropdown-menu role="menu"
+            li
+              a ng-click="show_login_modal()" E-mail Login
+            li
+              a href="#{user_omniauth_authorize_path(:facebook)}" Facebook Login

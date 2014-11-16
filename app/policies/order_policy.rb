@@ -8,5 +8,5 @@ class OrderPolicy < ApplicationPolicy
   governs Order
   manage_roles [:admin, :order_admin]
   create_roles [:order_submitter]
-  read_roles [:order_submitter] {|scope| scope.where(created_by: current_user)}
+  read_roles [:order_submitter] {|scope, user| scope.where(created_by: user.id)}
 end
