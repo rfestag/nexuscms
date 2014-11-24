@@ -2,3 +2,9 @@
 .run((editableOptions) ->
   editableOptions.theme = 'bs3'
 )
+@app.config(($provide) ->
+  $provide.decorator('$uiViewScroll', ($delegate) ->
+    return (uiViewElement) ->
+      window.scrollTo(0, 0);
+  )
+)

@@ -5,12 +5,13 @@ div.row
       li ng-repeat="news in news_entries" data-target="#highlights-carousel" data-slide-to="{{$index + 1}}"
     div.carousel-inner role="listbox"
       div.item.active
-        img align="middle" data-src="holder.js/1024x400/auto/#777:#555/text:First slide" alt="First"
+        img align="middle" data-src="holder.js/1024x400/auto/#777:#555/text:First slide" alt="First" 
         div.carousel-caption
           h4 Default First Panel
           p Fake Summary
       div.item ng-repeat="news in news_entries"
-        img align="middle" ng-src="{{news.image.banner.url}}" alt="{{news.title}}"
+        a ui-sref="news.id({id: news._slugs[0]})"
+          img align="middle" ng-src="{{news.image.banner.url}}" alt="{{news.title}}"
         div.carousel-caption
           h4
             == "{{news.title}}"
@@ -23,6 +24,7 @@ div.row
       span.glyphicon.glyphicon-chevron-right aria-hidden="true"
       span.sr-only Next
 div.row
+  p
   ul.list-inline.carousel-external-control
     li 
       a data-target="#highlights-carousel" data-slide-to="0"
