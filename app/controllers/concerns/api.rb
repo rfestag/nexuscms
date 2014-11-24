@@ -15,7 +15,7 @@ module Api
     query = (params[:query])? query.where(JSON.parse(params[:query])) : query
     total = ApplicationPolicy::Scope.new(current_user, query).resolve.count
     query = get_model_class.skip(skip).limit(limit)
-    @objects = ApplicationPolicy::Scope.new(current_user, query).resolve
+    @objects = ApplicationPolicy::Scope.new(current_user, query).resolve.map {|o| set_file_urls!(o)}
     respond_to do |format|
       format.json { render json: {total: total, objects: @objects} }
       format.xml { render xml: {total: total, objects: @objects} }
@@ -24,20 +24,53 @@ module Api
   def show
     @object = get_model_class.find(params[:id])
     authorize @object
+    set_file_urls!(@object)
     respond_to do |format|
       format.json { render json: @object }
       format.xml { render xml: @object }
     end
   end
+  def set_file_urls! object
+    return object unless (object.class.ancestors.select{|o| o.class == Module}).include? Attachable
+    object.class.file_fields.reduce(object) do |obj, file|
+      file = file.to_sym
+      puts "looking for #{file} in #{obj.inspect}"
+      url = (obj.send file).url
+      if url
+        versions = (obj.send file).versions
+        obj[file] = versions.keys.reduce({url: url}) do |urls, v|
+          urls[v] = versions[v].url
+          urls
+        end
+      end
+      obj
+    end
+  end
+  def add_files!
+    return @object unless (@object.class.ancestors.select{|o| o.class == Module}).include? Attachable
+    @object.class.file_fields.reduce(@object) do |obj, file|
+      if params[get_model][file]
+        type, encoder, data = params[get_model][file].match(%r{^data:(.*?);(.*?),(.*)$})[1..3]
+        ext = type.split("/")[1]
+        s = StringIO.new Base64.decode64(data)
+        s.class_eval do
+          attr_accessor :content_type, :original_filename
+        end
+        s.content_type = type
+        s.original_filename = "foo.#{ext}"
+        obj.send "#{file}=".to_sym, s
+      end
+      obj
+    end
+  end
   def create
-    uses_ancestry = (get_model_class.ancestors.select{|o| o.class == Module}).include? Mongoid::Ancestry
-    children = params[get_model].delete :children
+    #uses_ancestry = (get_model_class.ancestors.select{|o| o.class == Module}).include? Mongoid::Ancestry
+    file = params[:file]
     @object = get_model_class.new(object_params)
-    puts @object.inspect
+    add_files!
     authorize @object
     respond_to do |format|
-      success = @object.save
-      @object = create_children(@object, children) if uses_ancestry and children and success
+      @object.save
       if @object.errors.size == 0
         format.json { render json: @object, status: :created }
         format.xml { render xml: @object, status: :created }
@@ -47,27 +80,13 @@ module Api
       end
     end
   end
-  def create_children parent, children
-    children.each do |c|
-      new_children = c.delete :children
-      child = get_model_class.new c
-      child.parent = parent
-      #Because this is for create, there is no need to authorize the children
-      if child.save
-        create_children child, new_children if new_children
-      end
-      child.errors.each {|k,v| parent.errors.add "/#{child.title}/#{k}",v}
-    end
-    parent
-  end
   def update
-    uses_ancestry = (get_model_class.ancestors.select{|o| o.class == Module}).include? Mongoid::Ancestry
-    children = params[get_model].delete :children
+    #uses_ancestry = (get_model_class.ancestors.select{|o| o.class == Module}).include? Mongoid::Ancestry
     @object = get_model_class.find(params[:id])
+    add_files!
     authorize @object
     respond_to do |format|
       @object.update_attributes(object_params)
-      @object = update_children(@object, children) if @object.errors.size == 0 and uses_ancestry and children
       if @object.errors.size == 0 
         format.json { head :no_content, status: :ok }
         format.xml { head :no_content, status: :ok }
@@ -77,22 +96,6 @@ module Api
       end
     end
   end
-  def update_children parent, children
-    children.each do |c|
-      new_children = c.delete :children
-      child = get_model_class.find(c['_id'])
-      #Because we are updating children, we need to ensure
-      #the user only updates children they are authorized to update
-      authorize child
-      child.parent = parent
-      if child.update_attributes(object_params c)
-        update_children child, new_children if new_children
-      end
-      child.errors.each {|k,v| parent.errors.add "/#{child.title}/#{k}", v}
-    end
-    parent
-  end
-
   def destroy
     @object = get_model_class.find(params[:id])
     authorize @object

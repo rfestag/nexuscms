@@ -1,2 +1,2 @@
-@app.factory "EventssSvc", (ApiFactory) ->
+@app.factory "EventsSvc", (ApiFactory) ->
   ApiFactory.api_resource('events')

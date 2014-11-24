@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
-  root to: "home#index"
+  root to: "application#index"
 
   devise_for :users, controllers: {
     registrations: "users/registrations", 
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     get "#{model}/children" => "#{model}#children", defaults: {format: :json}
   end
   #Then register standard API endpoints for all models
-  [:users, :products, :orders, :events, :pages].each do |model|
+  [:users, :products, :orders, :events, :pages, :news].each do |model|
     get "#{model}/search" => "#{model}#search", defaults: {format: :json}
     get "#{model}/acl" => "#{model}#acl", defaults: {format: :json}
     resources model, defaults: {format: :json}

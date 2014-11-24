@@ -1,0 +1,19 @@
+h2
+  == "{{group.name}}"
+div.btn-group.pull-right ng-show="page_management_enabled"
+  button.btn.btn-default ng-click='edit()' title="Edit"
+    span.glyphicon.glyphicon-pencil
+  button.btn.btn-default ng-click='delete()' title="Delete"
+    span.glyphicon.glyphicon-trash
+
+div
+  dl.dl-horizontal
+    dt Website
+    dd 
+      == "{{group.website}}"
+    dt Address
+    dd 
+      == "{{group.address}}"
+
+
+div ng-bind-html="group.description"

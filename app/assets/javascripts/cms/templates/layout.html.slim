@@ -1,3 +1,7 @@
 div.ng-include src="'/templates/navigation.html'"
-div.ng-include src="'/templates/alerts.html'"
-div ui-view=true
+div.container
+  div.ng-include src="'/templates/alerts.html'"
+  div.col-md-3.col-xs-12
+    div.ng-include src="'/templates/left-panel.html'"
+  div.col-md-9.col-xs-12
+    div ui-view=true

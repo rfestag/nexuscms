@@ -1,1 +1,51 @@
-== user_omniauth_authorize_path(:facebook)
+div.row
+  div.carousel.slide id="highlights-carousel"
+    ol.carousel-indicators
+      li.active data-target="highlights-carousel" data-slide-to="0"
+      li ng-repeat="news in news_entries" data-target="#highlights-carousel" data-slide-to="{{$index + 1}}"
+    div.carousel-inner role="listbox"
+      div.item.active
+        img align="middle" data-src="holder.js/1024x400/auto/#777:#555/text:First slide" alt="First"
+        div.carousel-caption
+          h4 Default First Panel
+          p Fake Summary
+      div.item ng-repeat="news in news_entries"
+        img align="middle" ng-src="{{news.image.banner.url}}" alt="{{news.title}}"
+        div.carousel-caption
+          h4
+            == "{{news.title}}"
+          p
+            == "{{news.summary}}"
+    a.left.carousel-control data-target="#highlights-carousel" role="button" data-slide="prev"
+      span.glyphicon.glyphicon-chevron-left aria-hidden="true"
+      span.sr-only Previous
+    a.right.carousel-control data-target="#highlights-carousel" role="button" data-slide="next"
+      span.glyphicon.glyphicon-chevron-right aria-hidden="true"
+      span.sr-only Next
+div.row
+  ul.list-inline.carousel-external-control
+    li 
+      a data-target="#highlights-carousel" data-slide-to="0"
+        img data-src="holder.js/128x64"
+        div.caption
+          p Default first panel
+    li ng-repeat="news in news_entries"
+      a data-target="#highlights-carousel" data-slide-to="{{$index + 1}}"
+        img ng-src="{{news.image.thumbnail.url}}"
+        div.caption
+          p 
+            == "{{news.title}}"
+    span.btn.btn-lg.pull-right.glyphicon.glyphicon-plus ng-click="create_news()" ng-show="page_management_enabled"
+div.row
+  div.col-md-6.col-md-4
+    div.thumbnail
+      img src="/assets/chang_hon.png" height="300" width="300" alt="Register your school with Chang-Hon Colorado!"
+      div.caption
+        h3 Register your school!
+        p If you teach Taekwon-Do as developed by Gen. Choi Hong-Hi, and are interested in sharing information about your school and events you are hosting, please register!
+  div.col-md-6.col-md-4
+    div.thumbnail
+      img src="/assets/chang_hon.png" height="300" width="300" alt="Purchase apparel from Chang-Hon Colorado!"
+      div.caption
+        h3 Check out our apparel!
+        p In order to offset the costs of hosting, and to keep maintaining this site, we sell various shirts, hoodies, and other interesting materials. 

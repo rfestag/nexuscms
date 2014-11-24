@@ -1,0 +1,12 @@
+div.btn-group.pull-right
+  button.btn.btn-default ng-click="save()" title="Save"
+    span.glyphicon.glyphicon-ok
+  button.btn.btn-default type='button' ui-sref='home' title="Cancel"
+    span.glyphicon.glyphicon-remove 
+p
+div
+  form role="form"
+    div.form-group
+      label for="title" Title
+      input.form-control id="title" type="text" placeholder="Title" ng-model="group.name"
+    textarea ckeditor="editorOptions" ng-model="group.content"

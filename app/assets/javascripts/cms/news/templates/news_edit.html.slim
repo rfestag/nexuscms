@@ -1,0 +1,18 @@
+div.btn-group.pull-right
+  button.btn.btn-default ng-click="save()" title="Save"
+    span.glyphicon.glyphicon-ok
+  button.btn.btn-default type='button' ui-sref='home' title="Cancel"
+    span.glyphicon.glyphicon-remove 
+p
+div
+  form role="form" multipart=true
+    div.form-group
+      label for="title" Title
+      input.form-control id="title" type="text" placeholder="Title" ng-model="news.title"
+    div.form-group
+      label for="summary" Summary
+      input.form-control id="summary" type="text" placeholder="Summary" ng-model="news.summary"
+    div.form-group
+      label for="image" Image
+      input id="image" type="file" nv-file-select=true uploader="uploader"
+    textarea ckeditor="editorOptions" ng-model="news.content"

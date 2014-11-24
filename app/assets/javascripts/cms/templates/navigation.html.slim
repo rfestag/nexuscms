@@ -6,16 +6,24 @@ div.navbar.navbar-default role='navigation' bs-navbar=""
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand ui-sref='home' Sample App
-      ul.nav.navbar-nav.navbar-right
+      a.navbar-brand ui-sref='home' Chang-Hon Colorado
+      #img src="/assets/TKD-2.png"
+    div.navbar-collapse.collapse
+      ul.nav.navbar-nav.navbar-left
         li ng-repeat="page in root_pages" data-match-route="/pages/{{page._slugs[0]}}$"
           a ui-sref="pages.id({id: page._slugs[0]})"
             == "{{page.title}}"
+        li 
+          a href="" Forum
         li ng-show="page_management_enabled"
           a ng-click="create_root()"
-            i.glyphicon.glyphicon-plus
-    div.navbar-collapse.collapse
-      ul.nav.navbar-nav.pull-right
+            i.btn.btn-sm.glyphicon.glyphicon-plus
+      ul.nav.navbar-nav.navbar-right
+        li
+          form.navbar-form
+            div.form-group.right-inner-addon
+              input.form-control typer="text" placeholder="Search"
+              i.glyphicon.glyphicon-search
         li.dropdown ng-show="user"
           a.dropdown-toggle data-toggle="dropdown"
             span.glyphicon.glyphicon-user

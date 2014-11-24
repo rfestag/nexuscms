@@ -1,3 +1,2 @@
-@HomeCtrl = ($scope) ->
-  $scope.blah = {}
-  #CKEDITOR.replaceAll('ckeditor') 
+@HomeCtrl = ($scope, $modal, $state, SessionSvc, PagesSvc) ->
+  $('#highlights-carousel').carousel({interval: 5000})

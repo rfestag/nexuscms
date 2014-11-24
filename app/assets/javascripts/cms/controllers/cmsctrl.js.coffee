@@ -1,16 +1,21 @@
-@CmsCtrl = ($scope, $modal, $state, SessionSvc, PagesSvc) ->
+@CmsCtrl = ($scope, $modal, $state, SessionSvc, PagesSvc, NewsSvc) ->
   $scope.user = null
   $scope.page_management_enabled = false
   $scope.root_pages = []
   $scope.get_roots = () ->
     $scope.root_pages = PagesSvc.roots()
+  $scope.get_news = () ->
+    $scope.news_entries = NewsSvc.query({limit: 5})
   $scope.get_roots()
+  $scope.get_news()
   $scope.$on('pagesUpdated', (event, args) ->
     $scope.get_roots()
   )
 
   $scope.create_root = () ->
     $state.go "pages.create"
+  $scope.create_news = () ->
+    $state.go "news.create"
 
   $scope.reorder_roots = () ->
     alert "Need to re-order root pages"

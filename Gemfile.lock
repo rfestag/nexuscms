@@ -28,6 +28,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    addressable (2.3.6)
+    angularjs-file-upload-rails (1.1.0)
     arel (5.0.1.20140414130214)
     autoprefixer-rails (4.0.0.1)
       execjs
@@ -117,6 +119,10 @@ GEM
     json (1.8.1)
     jwt (1.0.0)
     kgio (2.9.2)
+    koala (1.10.1)
+      addressable
+      faraday
+      multi_json
     libv8 (3.16.14.7)
     listen (2.8.0)
       celluloid (>= 0.15.2)
@@ -234,6 +240,7 @@ GEM
     rails-assets-bootstrap-sass (3.0.2)
       rails-assets-jquery (>= 1.9.0)
     rails-assets-es5-shim (2.3.0)
+    rails-assets-holderjs (2.4.1)
     rails-assets-jquery (2.1.1)
     rails-assets-ng-ckeditor (0.2.1)
       rails-assets-angular (~> 1.2.9)
@@ -335,6 +342,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  angularjs-file-upload-rails
   autoprefixer-rails
   carrierwave-mongoid
   ckeditor
@@ -349,6 +357,7 @@ DEPENDENCIES
   hashugar
   jbuilder (~> 1.2)
   jquery-rails
+  koala
   mini_magick
   mongoid (~> 4.0.0)
   mongoid-ancestry
@@ -370,6 +379,7 @@ DEPENDENCIES
   rails-assets-angular-strap
   rails-assets-angular-ui-tree
   rails-assets-bootstrap-sass
+  rails-assets-holderjs
   rails-assets-ng-ckeditor
   rails-assets-ng-context-menu
   rb-inotify (~> 0.9)

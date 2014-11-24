@@ -56,4 +56,44 @@
       templateUrl: '/templates/pages_edit.html'
       controller: @PageCtrl
     })
+    .state('news', {
+      url: '/news'
+      templateUrl: '/templates/news.html'
+      abstract: true
+    })
+    .state('news.create', {
+      url: '/create'
+      templateUrl: '/templates/news_edit.html'
+      controller: @NewsCtrl
+    })
+    .state('news.id', {
+      url: '/:id'
+      templateUrl: '/templates/news_id.html'
+      controller: @NewsCtrl
+    })
+    .state('news.edit', {
+      url: '/:id/edit'
+      templateUrl: '/templates/news_edit.html'
+      controller: @NewsCtrl
+    })
+    .state('groups', {
+      url: '/groups'
+      templateUrl: '/templates/groups.html'
+      abstract: true
+    })
+    .state('groups.create', {
+      url: '/create'
+      templateUrl: '/templates/groups_edit.html'
+      controller: @GroupCtrl
+    })
+    .state('groups.id', {
+      url: '/:id'
+      templateUrl: '/templates/groups_id.html'
+      controller: @GroupCtrl
+    })
+    .state('groups.edit', {
+      url: '/:id/edit'
+      templateUrl: '/templates/groups_edit.html'
+      controller: @GroupCtrl
+    })
 )

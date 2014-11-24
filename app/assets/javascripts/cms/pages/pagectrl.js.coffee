@@ -1,7 +1,7 @@
 @PageCtrl = ($scope, $state, $stateParams, PagesSvc, SessionSvc, Alert) ->
   $scope.editorOptions = {}
   is_new = $state.is "pages.create"
-  $scope.page = PagesSvc.new if is_new
+  $scope.page = new PagesSvc if is_new
   $scope.page ||= $stateParams.page || PagesSvc.get({id: $stateParams.id}, () ->
     true
   , (a) ->
