@@ -36,6 +36,19 @@ GEM
     bcrypt (3.1.9)
     bson (2.3.0)
     builder (3.2.2)
+    capistrano (3.2.1)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+    capistrano-bundler (1.1.3)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-rails (1.1.2)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rbenv (2.0.2)
+      capistrano (~> 3.1)
+      sshkit (~> 1.3)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -58,6 +71,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    colorize (0.7.3)
     connection_pool (2.0.0)
     daemons (1.1.9)
     database_cleaner (1.3.0)
@@ -169,6 +183,9 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.9.1)
     oauth (0.4.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
@@ -309,6 +326,10 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    sshkit (1.5.1)
+      colorize
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     stringex (2.5.2)
     temple (0.6.10)
     therubyracer (0.12.1)
@@ -344,6 +365,10 @@ PLATFORMS
 DEPENDENCIES
   angularjs-file-upload-rails
   autoprefixer-rails
+  capistrano
+  capistrano-bundler
+  capistrano-rails
+  capistrano-rbenv
   carrierwave-mongoid
   ckeditor
   coffee-rails (~> 4.0.1)

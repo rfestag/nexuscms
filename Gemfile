@@ -15,6 +15,10 @@ group :development do
   gem "pry"
   gem "quiet_assets"
   gem "thin"
+  gem "capistrano"
+  gem "capistrano-rails"
+  gem "capistrano-bundler"
+  gem "capistrano-rbenv"
 end
 
 group :development, :test do
