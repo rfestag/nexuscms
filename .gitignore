@@ -16,3 +16,4 @@
 /tmp
 /public/uploads
 *.swp
+/config/application.yml
