@@ -3,6 +3,7 @@ namespace :nginx do
   task "install" do
     sudo "yum install nginx"
   end
+  after "deploy:install", "nginx:install"
   %w(start stop restart reload).each do |task_name|
     desc "#{task } Nginx"
     task task_name do

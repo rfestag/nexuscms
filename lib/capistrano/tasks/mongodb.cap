@@ -6,6 +6,7 @@ namespace :mongodb do
     smart_template 'mongo.repo', '/etc/yum.d/mongo.repo'
     sudo "yum clean all && yum install mongodb-org"
   end
+  after "deploy:install", "mongo:install"
   %w(start stop restart).each do |task_name|
     desc "#{task_name} Mongodb"
     task task_name do

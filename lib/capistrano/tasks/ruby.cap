@@ -3,4 +3,5 @@ namespace :ruby do
   task "install" do
     sudo "yum install ruby"
   end
+  after "deploy:install", "ruby:install"
 end
