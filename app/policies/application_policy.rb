@@ -120,7 +120,10 @@ class ApplicationPolicy
       auths
     end
     auths.reduce({scalars: [], arrays: {}, hashes: []}) do |auths, attribute|
-      case governs.fields[attribute].options[:type]
+      type = (attribute.is_a? Hash)? attribute.values.first.class : attribute.class
+      #puts "Looking for #{attribute} (#{attribute.class}) in #{governs.fields.keys} (#{governs.fields.keys.first.class})"
+      #case governs.fields[attribute].options[:type]
+      case type
       when Array
         auths[:arrays][attribute] = []
       when Hash

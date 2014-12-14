@@ -1,7 +1,7 @@
 @templates = {}
 @executables = []
 @links = []
-def template template_names=[], templates
+def template template_names=[], templates={}
   templates = template_names.reduce(templates) do |templates, name|
     templates[name] = nil
     templates

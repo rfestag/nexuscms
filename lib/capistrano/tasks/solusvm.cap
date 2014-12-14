@@ -1,5 +1,0 @@
-require 'solusvm'
-namespace :solusvm
-  task :create
-  end
-end
