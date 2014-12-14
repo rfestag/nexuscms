@@ -12,6 +12,9 @@ def links lnks
 end
 
 namespace :deploy do
+  desc "Install all components that require install"
+  task "install" do
+  end
   task :setup_config do
     on roles(:app) do
       # make the config dir
@@ -37,10 +40,10 @@ namespace :deploy do
         execute :chmod, "+x #{shared_path}/config/#{file}"
       end
 
-      # symlink stuff which should be... symlinked
+      # symlink stuff which should be... symlinked 
       #symlinks = fetch(:symlinks)
-
-      @symlinks.each do |src,dst|
+    
+      @symlinks.each do |src,dst| 
         sudo "ln -nfs #{shared_path}/config/#{src} #{sub_strings(dst)}"
       end
     end
