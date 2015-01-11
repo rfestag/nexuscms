@@ -1,13 +1,15 @@
 namespace :nginx do
   desc "Install Nginx (CentOS)"
   task "install" do
-    sudo "yum install nginx"
+    on roles(:web) do
+      sudo "yum -y install nginx"
+    end
   end
   after "deploy:install", "nginx:install"
   %w(start stop restart reload).each do |task_name|
     desc "#{task } Nginx"
     task task_name do
-      on roles(:app), in: :sequence, wait: 5 do
+      on roles(:web), in: :sequence, wait: 5 do
         sudo "/etc/init.d/nginx #{task_name}"
       end
     end
@@ -15,7 +17,7 @@ namespace :nginx do
 
   desc "Remove default Nginx Virtual Host"
   task "remove_default_vhost" do 
-    on roles(:app) do
+    on roles(:web) do
       if test("[ -f /etc/nginx/sites-enabled/default ]")
       sudo "rm /etc/nginx/sites-enabled/default"
       puts "removed default Nginx Virtualhost"
@@ -24,4 +26,5 @@ namespace :nginx do
       end
     end
   end
+  after 'deploy:setup', 'nginx:reload'
 end

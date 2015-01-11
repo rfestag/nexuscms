@@ -1,0 +1,35 @@
+namespace :elasticsearch do
+  desc "Add Elasticsearch Repo (CentOS)"
+  task "repo" do
+    on roles(:all) do
+      sudo "rpm --import http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
+      smart_template 'elasticsearch.repo', '/tmp/elasticsearch.repo'
+      sudo "mv /tmp/elasticsearch.repo /etc/yum.repos.d/elasticsearch.repo"
+    end
+  end
+  before "deploy:repo", "elasticsearch:repo"
+
+  desc "Install Elasticsearch (CentOS)"
+  task "install" do
+    on roles(:db) do
+      sudo "yum -y install java-1.7.0-openjdk-headless"
+      sudo "yum -y install elasticsearch"
+
+      smart_template 'elasticsearch.yml', '/tmp/elasticsearch.yml'
+      sudo "mv /tmp/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml"
+      sudo "chown root:root /etc/elasticsearch/elasticsearch.yml"
+      sudo "chmod 644 /etc/elasticsearch/elasticsearch.yml"
+      sudo '/bin/systemctl daemon-reload'
+      sudo '/bin/systemctl enable elasticsearch.service'
+    end
+  end
+  after "deploy:install", "elasticsearch:install"
+  %w(start stop restart).each do |task_name|
+    desc "#{task_name} Elasticsearch"
+    task task_name do
+      on roles(:db), in: :sequence, wait: 5 do
+        sudo "service elasticsearch #{task_name}"
+      end
+    end
+  end
+end

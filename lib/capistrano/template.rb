@@ -12,21 +12,21 @@
 # the second parameter can be left out
 def smart_template(from, to=nil)
   to ||= from
-  full_to_path = "#{shared_path}/config/#{to}"
+  full_to_path = (to.start_with? '/')? to : "#{shared_path}/config/#{to}"
   if from_erb_path = template_file(from)
-    from_erb = StringIO.new(ERB.new(File.read(from_erb_path)).result(binding))
-    upload! from_erb, full_to_path
+    from_erb = ERB.new(File.read(from_erb_path)).result(binding)
     info "copying: #{from_erb} to: #{full_to_path}"
+    upload! StringIO.new(from_erb), full_to_path
   else
-    error "error #{from} not found"
+    error "#{from} not found"
   end
 end
 
 def template_file(name)
-  if File.exist?((file = "config/deploy/#{fetch(:full_app_name)}/#{name}.erb"))
-    return file
-  elsif File.exist?((file = "config/deploy/shared/#{name}.erb"))
-    return file
+  locations = %W[config/deploy/#{fetch(:full_app_name)}/#{name}.erb
+                 config/deploy/shared/#{name}.erb]
+  locations.reduce(nil) do |location, l| 
+    location = l if File.exist? l
+    location
   end
-  return nil
 end

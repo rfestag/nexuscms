@@ -1,0 +1,61 @@
+@templates = []
+@executables = []
+@links = {}
+def template templates
+  @templates += templates
+end
+def executable exes
+  @executables += templates
+end
+def links lnks
+  @links.merge lnks
+end
+
+namespace :deploy do
+  task "repo" do
+    on roles(:all) do
+      "yum install epel-release"
+    end
+  end
+  task "yum_clean_all" do
+    on roles(:all) do
+      sudo "yum clean all"
+    end
+  end
+  after "deploy:repo", "deploy:yum_clean_all" 
+
+  desc "Install all components that require install"
+  task "install" do
+    on roles(:all) do
+      sudo "yum -y install epel-release net-tools mlocate git"
+      add_user fetch(:application), system_account: true
+      add_user_to_group fetch(:deploy_user), fetch(:application)
+      sudo "mkdir -p #{fetch :deploy_to}"
+      sudo "chown #{fetch :application}:#{fetch :application} #{fetch :deploy_to}"
+      sudo "chmod 2775 #{fetch :deploy_to}"
+    end
+  end
+  before "deploy:install", "deploy:repo"
+  task :setup do
+    on roles(:app) do
+      # make the config dir
+      execute :mkdir, "-p #{shared_path}/config"
+      full_app_name = fetch(:full_app_name)
+
+      @templates.each do |src, dst|
+        smart_template src, dst
+      end
+
+      @executables.each do |file|
+        execute :chmod, "+x #{shared_path}/config/#{file}"
+      end
+
+      @symlinks.each do |src,dst| 
+        sudo "ln -nfs #{shared_path}/config/#{src} #{sub_strings(dst)}"
+      end
+    end
+  end
+  # As of Capistrano 3.1, the `deploy:restart` task is not called
+  # automatically.
+  after 'deploy:publishing', 'deploy:restart'
+end

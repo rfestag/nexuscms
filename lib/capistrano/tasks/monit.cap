@@ -7,4 +7,5 @@ namespace :monit do
       end
     end
   end
+  after 'deploy:setup', 'monit:restart'
 end

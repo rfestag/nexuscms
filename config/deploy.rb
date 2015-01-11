@@ -1,8 +1,10 @@
 # config valid only for Capistrano 3.1
 lock '3.3.5'
 
+set :pty, true
 set :application, 'changhon'
 set :deploy_user, 'vpsadmin'
+set :deploy_to, "/var/www/#{fetch :application}"
 
 set :scm, :git
 set :repo_url, 'git@github.com:rfestag/nexuscms.git'
@@ -33,6 +35,7 @@ set(:config_files, %w(
 set(:executable_config_files, %w(
   unicorn_init.sh
 ))
+set :tests, []
 
 set(:symlinks, [
   {
@@ -64,17 +67,5 @@ namespace :deploy do
 
   # remove the default nginx configuration as it will tend
   # to conflict with our configs.
-  before 'deploy:setup_config', 'nginx:remove_default_vhost'
-
-  # reload nginx to it will pick up any modified vhosts from
-  # setup_config
-  after 'deploy:setup_config', 'nginx:reload'
-
-  # Restart monit so it will pick up any monit configurations
-  # we've added
-  after 'deploy:setup_config', 'monit:restart'
-
-  # As of Capistrano 3.1, the `deploy:restart` task is not called
-  # automatically.
-  after 'deploy:publishing', 'deploy:restart'
+  before 'deploy:setup', 'nginx:remove_default_vhost'
 end

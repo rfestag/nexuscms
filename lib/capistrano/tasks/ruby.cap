@@ -1,7 +1,9 @@
 namespace :ruby do
   desc "Install Ruby (from YUM: CentoOS 7 includes 2.0)"
   task "install" do
-    sudo "yum install ruby"
+    on roles(:all) do
+      sudo "yum -y install ruby"
+    end
   end
   after "deploy:install", "ruby:install"
 end

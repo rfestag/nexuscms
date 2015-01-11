@@ -1,16 +1,28 @@
+puts "importing Mongo"
 namespace :mongodb do
+  desc "Install Mongodb Repo (CentOS)"
+  task "repo" do
+    on roles(:all) do
+      uname = capture("uname -a")
+      arch = (uname.include? 'x86_64')? 'x86_64' : 'i686'
+      set :arch, arch
+      smart_template 'mongodb.repo', '/tmp/mongodb.repo'
+      sudo "mv /tmp/mongodb.repo /etc/yum.repos.d/mongodb.repo"
+    end
+  end
+  before "deploy:repo", "mongodb:repo"
+
   desc "Install Mongodb (CentOS)"
   task "install" do
-    uname = capture("uname -a")
-    arch = (uname.include? 'x86_64')? 'x86_64' : 'i686' 
-    smart_template 'mongo.repo', '/etc/yum.d/mongo.repo'
-    sudo "yum clean all && yum install mongodb-org"
+    on roles(:db) do
+      sudo "yum -y install mongodb-org"
+    end
   end
   after "deploy:install", "mongodb:install"
   %w(start stop restart).each do |task_name|
     desc "#{task_name} Mongodb"
     task task_name do
-      on roles(:app), in: :sequence, wait: 5 do
+      on roles(:db), in: :sequence, wait: 5 do
         sudo "service mongod #{task_name}"
       end
     end
