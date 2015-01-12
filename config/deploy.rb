@@ -13,19 +13,19 @@ set :repo_url, 'git@github.com:rfestag/nexuscms.git'
 set :keep_releases, 5
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/mongoid.yml config/application.yml}
+#set :linked_files, %w{config/mongoid.yml config/application.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-template %w(mongoid.example.yml 
-            application.example.yml 
+template %w(mongoid.yml 
+            application.yml 
             unicorn.rb 
             unicorn_init.sh)
 set(:config_files, %w(
   nginx.conf
-  mongoid.example.yml
-  application.example.yml
+  mongoid.yml
+  application.yml
   log_rotation
   monit
   unicorn.rb
