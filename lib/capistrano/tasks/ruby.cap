@@ -2,7 +2,7 @@ namespace :ruby do
   desc "Install Ruby (from YUM: CentoOS 7 includes 2.0)"
   task "install" do
     on roles(:all) do
-      sudo "yum -y install ruby"
+      sudo "yum -y install yum install -y gcc-c++ patch readline readline-devel zlib zlib-devel libyaml-devel libffi-devel openssl-devel make bzip2 autoconf automake libtool bison iconv-devel ruby ruby-devel"
       execute "gem install bundle"
     end
   end
