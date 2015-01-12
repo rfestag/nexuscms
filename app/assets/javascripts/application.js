@@ -16,7 +16,6 @@
 //= require holderjs
 //= require ckeditor/init
 //= require angular
-//= require angularjs-file-upload
 //= require angular-resource
 //= require angular-sanitize
 //= require bootstrap
