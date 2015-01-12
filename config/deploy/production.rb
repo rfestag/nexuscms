@@ -9,8 +9,6 @@ set :server_name, "www.changhoncolorad.org changhoncolorado.org"
 
 server 'www.changhoncolorado.org', user: 'vpsadmin', roles: %w{web app db}, primary: true
 
-set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
-
 # dont try and infer something as important as environment from
 # stage name.
 set :rails_env, :production

@@ -14,7 +14,7 @@ end
 namespace :deploy do
   task "repo" do
     on roles(:all) do
-      "yum install epel-release"
+      sudo "yum install epel-release"
     end
   end
   task "yum_clean_all" do

@@ -3,6 +3,7 @@ namespace :ruby do
   task "install" do
     on roles(:all) do
       sudo "yum -y install ruby"
+      execute "gem install bundle"
     end
   end
   after "deploy:install", "ruby:install"
